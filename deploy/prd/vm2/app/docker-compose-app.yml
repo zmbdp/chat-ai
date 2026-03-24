@@ -1,0 +1,57 @@
+version: '3.8'
+#启动命令 docker compose -p chat-ai -f docker-compose-mid.yml up -d
+services:
+  chat-ai-admin:
+    build:
+      context: service/admin
+    image: chat-aiprd/zmbdp-admin-service:1.0-SNAPSHOT
+    container_name: chat-ai-admin-prd
+    ports:
+      - "18081:18081"
+    environment:
+      RUN_ENV: prd
+      NACOS_ADDR: 你的云服务器1内网ip/你的虚拟机1内网ip:8854,你的云服务器1内网ip/你的虚拟机1内网ip:8856,你的云服务器2内网ip/你的虚拟机2内网ip:8858
+      JAVA_OPTS: -Xmx256m -Dspring.cloud.nacos.discovery.ip=你的云服务器2内网ip/你的虚拟机2内网ip
+    networks:
+      chat-ai_network_prd:
+  chat-ai-file:
+    build:
+      context: service/file
+    ports:
+      - "18082:18082"
+    image: chat-aiprd/zmbdp-file-service:1.0-SNAPSHOT
+    container_name: chat-ai-file-prd
+    environment:
+      RUN_ENV: prd
+      NACOS_ADDR: 你的云服务器1内网ip/你的虚拟机1内网ip:8854,你的云服务器1内网ip/你的虚拟机1内网ip:8856,你的云服务器2内网ip/你的虚拟机2内网ip:8858
+      JAVA_OPTS: -Xmx256m -Dspring.cloud.nacos.discovery.ip=你的云服务器2内网ip/你的虚拟机2内网ip
+    networks:
+      chat-ai_network_prd:
+  chat-ai-gateway:
+    build:
+      context: service/gateway
+    ports:
+      - "10030:10030"
+    image: chat-aiprd/zmbdp-gateway-service:1.0-SNAPSHOT
+    container_name: chat-ai-gateway-prd
+    environment:
+      RUN_ENV: prd
+      NACOS_ADDR: 你的云服务器1内网ip/你的虚拟机1内网ip:8854,你的云服务器1内网ip/你的虚拟机1内网ip:8856,你的云服务器2内网ip/你的虚拟机2内网ip:8858
+      JAVA_OPTS: -Xmx256m -Dspring.cloud.nacos.discovery.ip=你的云服务器2内网ip/你的虚拟机2内网ip
+    networks:
+      chat-ai_network_prd:
+  chat-ai-portal:
+    build:
+      context: service/portal
+    ports:
+      - "18083:18083"
+    image: chat-aiprd/zmbdp-portal-service:1.0-SNAPSHOT
+    container_name: chat-ai-portal-prd
+    environment:
+      RUN_ENV: prd
+      NACOS_ADDR: 你的云服务器1内网ip/你的虚拟机1内网ip:8854,你的云服务器1内网ip/你的虚拟机1内网ip:8856,你的云服务器2内网ip/你的虚拟机2内网ip:8858
+      JAVA_OPTS: -Xmx256m -Dspring.cloud.nacos.discovery.ip=你的云服务器2内网ip/你的虚拟机2内网ip
+    networks:
+      chat-ai_network_prd:
+networks:
+  chat-ai_network_prd:
