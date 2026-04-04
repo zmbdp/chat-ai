@@ -1,0 +1,9 @@
+server:
+  port: 18084
+  ai:
+    dashscope:
+      api-key: # 你的 API Key
+      chat:
+        options:
+          model: qwen3-omni-flash-2025-09-15
+          multi-model: true
