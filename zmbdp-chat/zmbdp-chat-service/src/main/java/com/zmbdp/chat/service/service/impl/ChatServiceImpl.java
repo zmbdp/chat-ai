@@ -14,6 +14,7 @@ import com.zmbdp.chat.service.mq.sender.ChatSessionProducer;
 import com.zmbdp.chat.service.service.IChatService;
 import com.zmbdp.chat.service.service.IChatSessionService;
 import com.zmbdp.common.cache.utils.CacheUtil;
+import com.zmbdp.common.core.utils.JsonUtil;
 import com.zmbdp.common.redis.service.RedisService;
 import com.zmbdp.common.security.utils.JwtUtil;
 import com.zmbdp.common.security.utils.SecurityUtil;
@@ -141,20 +142,25 @@ public class ChatServiceImpl implements IChatService {
     /**
      * 保存一条聊天消息。
      * 先落库，再删除对应历史缓存，保证下一次读取走最新数据。
+     * 用户带图时把图片 URL 序列化进 {@code media_urls}，重启后仍可还原多模态上下文。
      *
-     * @param chatId  聊天 id
-     * @param role    消息角色
-     * @param content 消息内容
+     * @param chatId    聊天 id
+     * @param role      消息角色
+     * @param content   消息内容
+     * @param mediaUrls 用户消息中的图片等 URL，无则 null
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveMessage(String chatId, String role, String content) {
+    public void saveMessage(String chatId, String role, String content, List<String> mediaUrls) {
         Long userId = getCurrentUserId();
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setChatId(chatId);
         chatMessage.setUserId(userId);
         chatMessage.setRole(role);
         chatMessage.setContent(content);
+        if (mediaUrls != null && !mediaUrls.isEmpty()) {
+            chatMessage.setMediaUrls(JsonUtil.classToJson(mediaUrls));
+        }
         chatMessageMapper.insert(chatMessage);
 
         // 消息写入后删除历史缓存，避免旧消息残留
@@ -234,7 +240,7 @@ public class ChatServiceImpl implements IChatService {
                                 .eq(ChatMessage::getUserId, userId)
                                 .orderByAsc(ChatMessage::getId)
                 ).stream()
-                .map(message -> new ChatMessageDTO(message.getRole(), message.getContent()))
+                .map(ChatMessageDTO::fromEntity)
                 .collect(Collectors.toList());
         CacheUtil.setL2Cache(redisService, cacheKey, history, caffeineCache, CACHE_TIMEOUT, TimeUnit.MINUTES);
         return history;

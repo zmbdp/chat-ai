@@ -4655,13 +4655,14 @@ CREATE TABLE `chat_session`
 drop table if exists `chat_message`;
 CREATE TABLE `chat_message`
 (
-    `id`      BIGINT(20)      NOT NULL COMMENT '主键 id',
-    `chat_id` VARCHAR(64) NOT NULL COMMENT '聊天 id',
-    `user_id` BIGINT(20)      NOT NULL COMMENT '用户 id',
-    `role`    VARCHAR(20) NOT NULL COMMENT '消息角色',
-    `content` LONGTEXT    NOT NULL COMMENT '消息内容',
+    `id`         BIGINT(20)      NOT NULL COMMENT '主键 id',
+    `chat_id`    VARCHAR(64) NOT NULL COMMENT '聊天 id',
+    `user_id`    BIGINT(20)      NOT NULL COMMENT '用户 id',
+    `role`       VARCHAR(20) NOT NULL COMMENT '消息角色',
+    `content`    LONGTEXT    NOT NULL COMMENT '消息内容',
+    `media_urls` TEXT NULL COMMENT '用户消息附带图片等地址(JSON 数组)，如 ["https://.../a.png"]',
     PRIMARY KEY (`id`),
-    KEY       `idx_chat_message_chat_user` (`chat_id`, `user_id`, `id`)
+    KEY          `idx_chat_message_chat_user` (`chat_id`, `user_id`, `id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='聊天消息表';
 
 commit;

@@ -96,7 +96,7 @@ public class ChatCachePreheatConfig {
         Map<String, List<ChatMessageDTO>> messageMap = chatMessages.stream()
                 .collect(Collectors.groupingBy(
                         message -> buildHistoryCacheKey(message.getUserId(), message.getChatId()),
-                        Collectors.mapping(message -> new ChatMessageDTO(message.getRole(), message.getContent()), Collectors.toList())
+                        Collectors.mapping(ChatMessageDTO::fromEntity, Collectors.toList())
                 ));
 
         // 按用户维度预热聊天列表缓存，再逐条预热聊天元信息缓存和聊天历史缓存

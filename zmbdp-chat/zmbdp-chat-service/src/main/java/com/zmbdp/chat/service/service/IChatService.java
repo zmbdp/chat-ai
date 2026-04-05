@@ -18,11 +18,12 @@ public interface IChatService {
     /**
      * 保存一条聊天消息
      *
-     * @param chatId  聊天 id
-     * @param role    消息角色
-     * @param content 消息内容
+     * @param chatId    聊天 id
+     * @param role      消息角色
+     * @param content   消息内容
+     * @param mediaUrls 用户消息中的图片等 URL，非用户消息或无图时传 null
      */
-    void saveMessage(String chatId, String role, String content);
+    void saveMessage(String chatId, String role, String content, List<String> mediaUrls);
 
     /**
      * 根据聊天 id 删除会话

@@ -37,4 +37,10 @@ public class ChatMessage extends BaseDO {
      * 消息内容
      */
     private String content;
+
+    /**
+     * 用户消息附带的媒体地址（图片等），JSON 数组字符串，例如 ["https://.../a.png"]；助手消息一般为空。
+     */
+    @TableField("media_urls")
+    private String mediaUrls;
 }
