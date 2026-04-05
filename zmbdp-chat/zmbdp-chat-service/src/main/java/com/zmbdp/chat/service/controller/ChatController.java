@@ -69,9 +69,7 @@ public class ChatController {
     /**
      * 聊天接口
      *
-     * @param prompt   输入内容
-     * @param chatId   聊天 id
-     * @param imageUrl 图片地址
+     * @param streamReqDTO 聊天请求参数
      * @return 聊天结果
      */
     @PostMapping(value = "/stream", produces = "text/html;charset=utf-8")
