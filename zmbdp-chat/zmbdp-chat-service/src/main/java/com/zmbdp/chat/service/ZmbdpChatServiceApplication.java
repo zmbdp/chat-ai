@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
- * 聊天咨询服务启动类
+ * 聊天服务启动类
  *
  * @author 稚名不带撇
  */
@@ -22,6 +22,6 @@ public class ZmbdpChatServiceApplication {
      */
     public static void main(String[] args) {
         SpringApplication.run(ZmbdpChatServiceApplication.class, args);
-        log.info("聊天咨询服务启动成功......");
+        log.info("聊天服务启动成功......");
     }
 }
