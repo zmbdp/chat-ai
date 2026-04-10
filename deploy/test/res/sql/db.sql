@@ -8,7 +8,7 @@ use `chat-ai_test`;
 DROP TABLE IF EXISTS `operation_log`;
 CREATE TABLE `operation_log`
 (
-    `id` bigint(20) unsigned NOT NULL COMMENT '主键ID（雪花算法，由应用生成）',
+    `id`              bigint(20) unsigned NOT NULL COMMENT '主键ID（雪花算法，由应用生成）',
     `operation`       varchar(255) NOT NULL COMMENT '操作描述',
     `method`          varchar(500)  DEFAULT NULL COMMENT '方法全限定名（类名#方法名）',
     `request_path`    varchar(500)  DEFAULT NULL COMMENT '请求路径',
@@ -4617,7 +4617,7 @@ CREATE TABLE `app_user`
     `nick_name`    varchar(64) NULL DEFAULT NULL COMMENT '昵称',
     `phone_number` varchar(64) NULL DEFAULT NULL COMMENT '电话',
     `open_id`      varchar(64) NULL DEFAULT NULL COMMENT '微信openId',
-    `email` varchar(64) NULL DEFAULT NULL COMMENT '用户邮箱',
+    `email`        varchar(64) NULL DEFAULT NULL COMMENT '用户邮箱',
     `avatar`       varchar(255) NULL DEFAULT NULL COMMENT '头像',
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `uk_phone`(`phone_number`) USING BTREE,
@@ -4644,4 +4644,27 @@ INSERT INTO sys_user (nick_name, phone_number, password, `identity`, remark, sta
 VALUES ('稚名不带撇', '62a9bfed8dc2cc6e2c83eb628bd10d3e',
         '78199ef620f359d5a33b91d172d3acfeb13591719c53d3cfa14ade0614fcb1a6',
         'super_admin', NULL, 'enable');
+
+drop table if exists `chat_session`;
+CREATE TABLE `chat_session`
+(
+    `id`      VARCHAR(64) NOT NULL COMMENT '主键（雪花算法生成）',
+    `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+    `title`   varchar(64) NULL DEFAULT NULL COMMENT '会话标题',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COMMENT = '咨询会话表';
+
+drop table if exists `chat_message`;
+CREATE TABLE `chat_message`
+(
+    `id`         BIGINT(20)      NOT NULL COMMENT '主键 id',
+    `chat_id`    VARCHAR(64) NOT NULL COMMENT '聊天 id',
+    `user_id`    BIGINT(20)      NOT NULL COMMENT '用户 id',
+    `role`       VARCHAR(20) NOT NULL COMMENT '消息角色',
+    `content`    LONGTEXT    NOT NULL COMMENT '消息内容',
+    `media_urls` TEXT NULL COMMENT '用户消息附带图片等地址(JSON 数组)，如 ["https://.../a.png"]',
+    PRIMARY KEY (`id`),
+    KEY          `idx_chat_message_chat_user` (`chat_id`, `user_id`, `id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='聊天消息表';
+
 commit;

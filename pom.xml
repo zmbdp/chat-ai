@@ -24,6 +24,7 @@
         <module>zmbdp-file</module>
         <module>zmbdp-admin</module>
         <module>zmbdp-portal</module>
+        <module>zmbdp-chat</module>
     </modules>
 
     <properties>
@@ -52,6 +53,7 @@
         <micrometer-tracing.version>1.3.3</micrometer-tracing.version>
         <skywalking.version>9.0.0</skywalking.version>
         <xxl-job.version>2.4.2</xxl-job.version>
+        <alibaba.ai.version>1.0.0.2</alibaba.ai.version>
 
         <!--运行环境-->
         <runenv>dev</runenv>
@@ -226,6 +228,11 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>com.alibaba.cloud.ai</groupId>
+                <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
+                <version>${alibaba.ai.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
