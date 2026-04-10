@@ -25,7 +25,6 @@
         <module>zmbdp-admin</module>
         <module>zmbdp-portal</module>
         <module>zmbdp-chat</module>
-        <module>zmbdp-chat/zmbdp-chat-service</module>
     </modules>
 
     <properties>
